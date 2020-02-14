@@ -12,7 +12,7 @@ CREATE TABLE projects (
     url         VARCHAR null,
     private     INTEGER not null
 );
-CREATE TABLE imgaes (
+CREATE TABLE images (
     id          VARCHAR PRIMARY KEY,
     project_id  VARCHAR not null,
     path        VARCHAR not null
