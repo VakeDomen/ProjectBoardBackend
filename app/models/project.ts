@@ -1,6 +1,6 @@
-const DbItem = require("./db.item");
+import { DbItem } from './db.item';
 
-class Project extends DbItem {
+export class Project extends DbItem {
 
     name: string;
     description: string;
@@ -17,5 +17,3 @@ class Project extends DbItem {
         this.private     = data.private;
     }
 }
-
-module.exports = Project;

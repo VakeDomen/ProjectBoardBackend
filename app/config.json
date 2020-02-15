@@ -1,0 +1,9 @@
+{
+    "db": {
+        "tables": {
+            "projects": "projects",
+            "images": "images",
+            "users": "users"
+        }
+    }
+}

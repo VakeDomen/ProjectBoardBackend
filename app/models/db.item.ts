@@ -1,3 +1,4 @@
+const uuidv4 = require('uuid/v4');
 
 export class DbItem {
 
@@ -7,6 +8,10 @@ export class DbItem {
         this.id = id;
     }    
 
+    generateId(): string {
+        this.id = uuidv4();
+        return this.id;
+    }
 
     isEmpty(): boolean {
         for(let data in this){
@@ -19,27 +24,18 @@ export class DbItem {
 
     valuesToString(): string {
         var str = "";
-        for(let data in this){
-            if(typeof this[data] != "undefined"){
-                if(str != "") str += ", ";
-                if(data != "id") str+= data + " = " + "'" + this[data] + "'";
+        for(let key of Object.keys(this)){
+            if(typeof this[key] !== "undefined"){
+                if(str !== "") str += ", ";
+                if(key !== "id") str+= key + " = " + "'" + this[key] + "'";
             }
         }
         return str;
     }
     
-    hasValue(value: string): boolean{
-        for(let data in this){
-            if( data == value){
-                return true;
-            }
-        }
-        return false;
-    }
-
     listKeys(): string{
        var str = "";
-       for(let data in this){
+       for(let data of Object.keys(this)){
            if(typeof this[data]!= "undefined"){
                if(str != "") str += ", " + data ;
                else str += data ;
@@ -50,7 +46,7 @@ export class DbItem {
 
     listValues(): string{
        var str = "";
-       for(let data in this){
+       for(let data of Object.keys(this)){
            if(typeof this[data]!= "undefined"){
                if(str != "") str += ", \'" + this[data] + "\'";
                else str += "\'" + this[data] + "\'";
