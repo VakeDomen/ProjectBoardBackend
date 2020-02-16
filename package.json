@@ -25,6 +25,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
+    "ping": "^0.2.2",
     "sqlite": "^3.0.3",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.5",

@@ -27,8 +27,11 @@ app.listen(process.env.PORT);
 console.log("Listening on port " + process.env.PORT);
 /*____________handle migration_____________ */
 Promise.resolve()
-  .then(() => sqlite.open(process.env.SQLITE_DB, { Promise }))
-  .then(db => db.migrate({ force: 'last' }));
+.then(() => sqlite.open(process.env.SQLITE_DB, { Promise }))
+.then(db => {
+	db.migrate()
+	// db.migrate({ force: 'last' })
+});
 
 //CORS error handling
 app.use(cors());

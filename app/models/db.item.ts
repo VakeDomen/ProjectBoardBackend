@@ -14,8 +14,8 @@ export class DbItem {
     }
 
     isEmpty(): boolean {
-        for(let data in this){
-            if(typeof this[data] !== 'undefined'){
+        for (let data in this){
+            if (typeof this[data] !== 'undefined'){
                 return false;
             }
         }
@@ -24,10 +24,16 @@ export class DbItem {
 
     valuesToString(): string {
         var str = "";
-        for(let key of Object.keys(this)){
-            if(typeof this[key] !== "undefined"){
-                if(str !== "") str += ", ";
-                if(key !== "id") str+= key + " = " + "'" + this[key] + "'";
+        for (let key of Object.keys(this)){
+            if (typeof this[key] !== "undefined"){
+                if (str !== "") str += ", ";
+                if (key !== "id") {
+                    if (typeof this[key] === "boolean") {
+                        str+= key + " = " + ((this[key])? 1 : 0);
+                    } else {
+                        str+= key + " = " + "'" + this[key] + "'";
+                    }
+                } 
             }
         }
         return str;
@@ -35,9 +41,9 @@ export class DbItem {
     
     listKeys(): string{
        var str = "";
-       for(let data of Object.keys(this)){
-           if(typeof this[data]!= "undefined"){
-               if(str != "") str += ", " + data ;
+       for (let data of Object.keys(this)){
+           if (typeof this[data]!= "undefined"){
+               if (str != "") str += ", " + data ;
                else str += data ;
            }
        }
@@ -46,10 +52,15 @@ export class DbItem {
 
     listValues(): string{
        var str = "";
-       for(let data of Object.keys(this)){
-           if(typeof this[data]!= "undefined"){
-               if(str != "") str += ", \'" + this[data] + "\'";
-               else str += "\'" + this[data] + "\'";
+       for (let data of Object.keys(this)) {
+           if (typeof this[data]!= "undefined") {
+                if (typeof this[data] === "boolean") {
+                    if (str != "") str += ", " + ((this[data])? 1 : 0);
+                    else str += "\'" + ((this[data])? 1 : 0) + "\'";
+                } else {
+                    if (str != "") str += ", \'" + this[data] + "\'";
+                    else str += "\'" + this[data] + "\'";
+                }
            }
        }
        return str;
@@ -57,19 +68,27 @@ export class DbItem {
 
     whereString(): string{
         var str = "";
-        for(let data in this){
-            if(typeof this[data] != "undefined"){
-                if(typeof this[data] === "number"){
-                    if(str != "") str += "AND '" + data + "' = '" + this[data] + "'";
+        for (let data of Object.keys(this)){
+            if (typeof this[data] != "undefined") {
+                if (typeof this[data] === "number") {
+                    if (str != "") str += "AND '" + data + "' = '" + this[data] + "'";
                     else str += data + " = " + this[data];
-                }else{
-                    if(str != "") str += "AND '" + data + "' = '" + this[data] + "'";
+                } else if (typeof this[data] === "boolean") {
+                    if (str != "") str += "AND '" + data + "' = '" + ((this[data])? 1 : 0) + "'";
+                    else str += data + " = " + this[data];
+                } else {
+                    if (str != "") str += "AND '" + data + "' = '" + this[data] + "'";
                     else str += data + " = '" + this[data] + "'";
                 }
             }
         }
-        if(str == "") str = "1";
+        if (str == "") str = "1";
         return str;
     }
 
+    updateValues(updates: DbItem): void {
+        for (let key of Object.keys(updates)) {
+            if (key !== 'id') this[key] = updates[key];
+        }
+    }
 }

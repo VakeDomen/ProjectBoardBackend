@@ -6,11 +6,11 @@ CREATE TABLE users (
 );
 CREATE TABLE projects (
     id          VARCHAR PRIMARY KEY,
-    name        VARCHAR not null,
-    description VARCHAR null,
-    git         VARCHAR null,
-    url         VARCHAR null,
-    private     INTEGER not null
+    name        VARCHAR DEFAULT "Unknown project" not null,
+    description VARCHAR DEFAULT "No description" not null,
+    git         VARCHAR DEFAULT "No git repository" not null,
+    url         VARCHAR DEFAULT "No public url" not null,
+    private     INTEGER DEFAULT 0 not null
 );
 CREATE TABLE images (
     id          VARCHAR PRIMARY KEY,

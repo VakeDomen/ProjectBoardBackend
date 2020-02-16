@@ -14,6 +14,6 @@ export class Project extends DbItem {
         this.description = data.description;
         this.git         = data.git;
         this.url         = data.url;
-        this.private     = data.private;
+        this.private     = (typeof data.private === 'number') ? ((data.private === 1)? true : false) : data.private;
     }
 }
