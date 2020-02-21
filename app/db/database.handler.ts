@@ -1,7 +1,7 @@
 const sqlite = require("sqlite");
 import { DbItem } from '../models/db.item';
 
-const dbConnection: Promise<any> = sqlite.open('./app/db/sqlite.db', { Promise });
+const dbConnection: Promise<any> = sqlite.open(process.env.SQLITE_DB, { Promise });
 
 export async function query(query: string): Promise<DbItem[]> {
     const db = await dbConnection;

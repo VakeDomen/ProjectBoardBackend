@@ -6,6 +6,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const path = require('path');
 
 
 
@@ -45,7 +46,8 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({extended: true, limit: "50mb"}));
 
 /*_______routes for request handling__________*/
-fs.readdir("./app/routes/", (err: Error, files: string[]) => {
+const absPath = path.resolve(__dirname, '.')
+fs.readdir(absPath + "/routes/", (err: Error, files: string[]) => {
 	if (err) {
 		console.log("Error processing routes");
 		console.log(err)
@@ -53,7 +55,7 @@ fs.readdir("./app/routes/", (err: Error, files: string[]) => {
 	}	
 	files.forEach((routeFileName: string) => {
 		console.log("Importing " + routeFileName + "...");
-		app.use(require("./routes/" + routeFileName));
+		app.use(require( absPath + "/routes/" + routeFileName));
 	})
 
 	// catch the not handled requests

@@ -4,7 +4,6 @@ import { Project } from '../models/project';
 import { fetch, fetchAll, insert, update } from '../db/database.handler';
 import * as config from '../config.json';
 import { DbItem } from '../models/db.item';
-import { response } from 'express';
 
 router.get("/projects", async (req: any, resp: any) => {
     const projects = await fetch(config.db.tables.projects, new Project({private: false}));
@@ -23,7 +22,6 @@ router.get("/projects/:id", async (req: any, resp: any) => {
             data: [],
         });    
     }
-
     const projects = await fetch(config.db.tables.projects, new Project({id: req.params['id']}));
     resp.status(200);
     resp.send({
