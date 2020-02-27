@@ -4,8 +4,10 @@ export class DbItem {
 
     id: string | undefined;
 
-    constructor(id: string | undefined){
-        this.id = id;
+    constructor(data: any | undefined){
+        if (typeof data !== 'undefined') {
+            this.id = data.id;
+        }
     }    
 
     generateId(): void {

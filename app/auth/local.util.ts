@@ -14,10 +14,10 @@ export async function login(reqest: express.Request): Promise<Response> {
         return new ErrorResponse(400, 'Invalid credentials');
     }
     const users = await fetch(config.db.tables.users, new User({ email: credentials.email }));
-    const user = new User(users.pop());
-    if (!user) {
+    if (!users || users.length !== 1) {
         return new ErrorResponse(401, 'Unauthorized!');
     }
+    const user = new User(users.pop());
     if(!user.isPasswordSame(credentials.password)) {
         return new ErrorResponse(401, 'Unauthorized!');
     }

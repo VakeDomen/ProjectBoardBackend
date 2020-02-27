@@ -22,7 +22,7 @@ export class Response {
         return this.code;
     }
 
-    send(expressResponse: express.Response) {
+    send(expressResponse: express.Response): void {
         expressResponse.status(this.code);
         expressResponse.send(this);
     }

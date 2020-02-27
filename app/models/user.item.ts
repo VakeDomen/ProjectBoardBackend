@@ -10,7 +10,7 @@ export class User extends DbItem {
     role: 'USER' | 'ADMIN' = 'USER';
 
     constructor(data: any) {
-        super(data.id);
+        super(data);
         this.name       = data.name;
         this.email      = data.email;
         this.password   = data.password;
