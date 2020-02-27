@@ -1,70 +1,45 @@
-const express = require("express");
-const router = express.Router();
-import { Project } from '../models/project';
+import * as express from 'express';
+import { Project } from '../models/project.item';
 import { fetch, fetchAll, insert, update } from '../db/database.handler';
 import * as config from '../config.json';
 import { DbItem } from '../models/db.item';
+import { SuccessResponse } from '../models/success.response';
+import { ErrorResponse } from '../models/error.response';
+import { Response } from '../models/response';
 
-router.get("/projects", async (req: any, resp: any) => {
+const router = express.Router();
+router.get("/projects", async (req: express.Request, resp: express.Response) => {
     const projects = await fetch(config.db.tables.projects, new Project({private: false}));
-    resp.status(200);
-    resp.send({
-        message: 'Success',
-        data: projects,
-    });
+    new SuccessResponse().setData(projects).send(resp);
 });
 
-router.get("/projects/:id", async (req: any, resp: any) => {
+router.get("/projects/:id", async (req: express.Request, resp: express.Response) => {
     if (!req.params['id']) {
-        resp.status(404);
-        resp.send({
-            message: 'Not found! No target!',
-            data: [],
-        });    
+        new SuccessResponse(404, 'No projects found!').send(resp);
     }
     const projects = await fetch(config.db.tables.projects, new Project({id: req.params['id']}));
-    resp.status(200);
-    resp.send({
-        message: 'Success',
-        data: projects,
-    });
+    new SuccessResponse().setData(projects).send(resp);
 });
 
-router.post("/projects", async (req: any, resp: any) => {
+router.post("/projects", async (req: express.Request, resp: express.Response) => {
     let project = new Project(req.body);
     project.generateId();
     let response = await insert(config.db.tables.projects, project);
-    resp.status(201);
-    resp.send({
-        message: "Successfuly created resource!",
-        data: [project]
-    });
+    new SuccessResponse(201, 'Successfully created resource!', response).send(resp);
 });
 
-router.patch("/projects/:id", async (req: any, resp: any) => {
+router.patch("/projects/:id", async (req: express.Request, resp: express.Response) => {
     let project: DbItem | undefined = (await fetch(config.db.tables.projects, new DbItem(req.params['id']))).pop();
     if (!project) {
-        resp.status(404);
-        resp.send({
-            message: 'Not found! No target!',
-            data: false,
-        });  
+        new Response(404, 'No projects found!').send(resp);
     }
     project = new Project(project);
     project.updateValues(req.body);
     await update(config.db.tables.projects, project)
     .catch(err => {
-        resp.status(500);
-        resp.send({
-            message: "Errror",
-            error: err
-        })
+        new ErrorResponse().setError(err).send(resp);
     });
-    resp.send({
-        message: 'Success',
-        data: project
-    });
+    new SuccessResponse().setData([project]).send(resp);
 });
-
 
 module.exports = router;

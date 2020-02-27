@@ -2,15 +2,14 @@ const uuidv4 = require('uuid/v4');
 
 export class DbItem {
 
-    id: string;
+    id: string | undefined;
 
-    constructor(id: string){
+    constructor(id: string | undefined){
         this.id = id;
     }    
 
-    generateId(): string {
+    generateId(): void {
         this.id = uuidv4();
-        return this.id;
     }
 
     isEmpty(): boolean {
@@ -66,18 +65,18 @@ export class DbItem {
        return str;
     }
 
-    whereString(): string{
+    whereString(): string {
         var str = "";
         for (let data of Object.keys(this)){
             if (typeof this[data] != "undefined") {
                 if (typeof this[data] === "number") {
-                    if (str != "") str += "AND '" + data + "' = '" + this[data] + "'";
+                    if (str != "") str += " AND " + data + " = '" + this[data] + "'";
                     else str += data + " = " + this[data];
                 } else if (typeof this[data] === "boolean") {
-                    if (str != "") str += "AND '" + data + "' = '" + ((this[data])? 1 : 0) + "'";
+                    if (str != "") str += " AND " + data + " = '" + ((this[data])? 1 : 0) + "'";
                     else str += data + " = " + this[data];
                 } else {
-                    if (str != "") str += "AND '" + data + "' = '" + this[data] + "'";
+                    if (str != "") str += " AND " + data + " = '" + this[data] + "'";
                     else str += data + " = '" + this[data] + "'";
                 }
             }

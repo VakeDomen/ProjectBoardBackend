@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ping = require("ping");
 import * as config  from '../config.json';
-import { Project } from '../models/project';
+import { Project } from '../models/project.item';
 import { fetch } from '../db/database.handler';
 
 router.get("/projects/ping/:id", async (req, resp) => {
