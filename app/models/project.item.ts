@@ -7,6 +7,7 @@ export class Project extends DbItem {
     git: string;
     url: string;
     private: boolean;
+    owner: string;
 
     constructor(data: any) {
         super(data.id);
@@ -15,5 +16,6 @@ export class Project extends DbItem {
         this.git         = data.git;
         this.url         = data.url;
         this.private     = (typeof data.private === 'number') ? ((data.private === 1)? true : false) : data.private;
+        this.owner       = data.owner;
     }
 }

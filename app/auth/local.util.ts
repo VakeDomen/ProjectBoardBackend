@@ -18,6 +18,7 @@ export async function login(reqest: express.Request): Promise<Response> {
         return new ErrorResponse(401, 'Unauthorized!');
     }
     const user = new User(users.pop());
+    console.log(user);
     if(!user.isPasswordSame(credentials.password)) {
         return new ErrorResponse(401, 'Unauthorized!');
     }
@@ -40,7 +41,7 @@ export async function register(request: express.Request): Promise<Response> {
     return new SuccessResponse(201, 'User registered');
 }
 
-export async function varifyTokenMiddleware(req: express.Request, resp: express.Response, next: any): Promise<void> {
+export async function verifyTokenMiddleware(req: express.Request, resp: express.Response, next: any): Promise<void> {
     const extraction: string | ErrorResponse = extractToken(req);
     console.log("extraction", extraction);
     let token: string = '';
@@ -57,7 +58,7 @@ export async function varifyTokenMiddleware(req: express.Request, resp: express.
     } else {
         const user: User = new User(userJSON);
         const loggedUser = await fetch(config.db.tables.users, user);
-        Object.assign(req, { validToken: true, token: token, loggedUser: loggedUser });
+        Object.assign(req, { token: token, loggedUser: loggedUser.pop() });
         next();
     }    
 }

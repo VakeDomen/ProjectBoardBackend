@@ -6,6 +6,8 @@ import { DbItem } from '../models/db.item';
 import { SuccessResponse } from '../models/success.response';
 import { ErrorResponse } from '../models/error.response';
 import { Response } from '../models/response';
+import { verifyTokenMiddleware } from '../auth/local.util';
+import { User } from '../models/user.item';
 
 const router = express.Router();
 router.get("/projects", async (req: express.Request, resp: express.Response) => {
@@ -21,9 +23,13 @@ router.get("/projects/:id", async (req: express.Request, resp: express.Response)
     new SuccessResponse().setData(projects).send(resp);
 });
 
-router.post("/projects", async (req: express.Request, resp: express.Response) => {
+router.post("/projects", verifyTokenMiddleware, async (req: express.Request, resp: express.Response) => {
+    let user: User = req['loggedUser'];
     let project = new Project(req.body);
+    project.owner = <string>user.id;
     project.generateId();
+    console.log(user, user['id'])
+    console.log(project);
     let response = await insert(config.db.tables.projects, project);
     new SuccessResponse(201, 'Successfully created resource!', response).send(resp);
 });
