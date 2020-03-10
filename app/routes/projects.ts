@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Project } from '../models/project.item';
-import { fetch, fetchAll, insert, update } from '../db/database.handler';
+import { fetch, insert, update } from '../db/database.handler';
 import * as config from '../config.json';
 import { DbItem } from '../models/db.item';
 import { SuccessResponse } from '../models/success.response';
@@ -28,10 +28,8 @@ router.post("/projects", verifyTokenMiddleware, async (req: express.Request, res
     let project = new Project(req.body);
     project.owner = <string>user.id;
     project.generateId();
-    console.log(user, user['id'])
-    console.log(project);
     let response = await insert(config.db.tables.projects, project);
-    new SuccessResponse(201, 'Successfully created resource!', response).send(resp);
+    new SuccessResponse(201, 'Successfully created resource!', [project]).send(resp);
 });
 
 router.patch("/projects/:id", async (req: express.Request, resp: express.Response) => {

@@ -1,5 +1,5 @@
 // import * as url from 'url';
-import { login, logout, register, varifyTokenMiddleware } from '../auth/local.util';
+import { login, register } from '../auth/local.util';
 // import { urlGoogle, getGoogleAccountFromCode, verifyToken } from '../auth/google.util';
 import * as express from 'express';
 import { Response } from '../models/response';

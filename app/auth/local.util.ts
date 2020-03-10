@@ -43,7 +43,6 @@ export async function register(request: express.Request): Promise<Response> {
 
 export async function verifyTokenMiddleware(req: express.Request, resp: express.Response, next: any): Promise<void> {
     const extraction: string | ErrorResponse = extractToken(req);
-    console.log("extraction", extraction);
     let token: string = '';
     if (typeof extraction !== 'string') {
         new ErrorResponse(401, 'Unauthorized').send(resp);
@@ -52,7 +51,6 @@ export async function verifyTokenMiddleware(req: express.Request, resp: express.
     }
     const userJSON: string | null | void =  await varifyToken(token)
     .catch(() => new ErrorResponse(401, 'Unauthorized').send(resp));
-    console.log("json", userJSON);
     if (!userJSON) {
         new ErrorResponse(401, 'Unauthorized').send(resp);
     } else {

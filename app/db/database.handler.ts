@@ -24,3 +24,14 @@ export async function insert(table: string, filter: DbItem): Promise<DbItem[]> {
 export async function update(table: string, filter: DbItem): Promise<DbItem[]> {
     return query('UPDATE ' + table + ' SET ' + filter.valuesToString() + ' WHERE id=\'' + filter.id + '\'');
 }
+
+export async function innerJoinWithWhereClause(
+    table1: string,
+    table2: string,
+    col1: string,
+    col2: string,
+    table1filter: DbItem
+): Promise<DbItem[]> {
+    const table = 'SELECT * FROM ' + table1 + ' '
+    return query('SELECT')
+}
