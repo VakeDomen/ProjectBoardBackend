@@ -33,11 +33,10 @@ router.post("/projects", verifyTokenMiddleware, async (req: express.Request, res
 });
 
 router.patch("/projects/:id", async (req: express.Request, resp: express.Response) => {
-    let project: DbItem | undefined = (await fetch(config.db.tables.projects, new DbItem(req.params['id']))).pop();
+    let project: Project | void = (await fetch<Project>(config.db.tables.projects, new DbItem(req.params['id']))).pop();
     if (!project) {
-        new Response(404, 'No projects found!').send(resp);
+        return new Response(404, 'No projects found!').send(resp);
     }
-    project = new Project(project);
     project.updateValues(req.body);
     await update(config.db.tables.projects, project)
     .catch(err => {
