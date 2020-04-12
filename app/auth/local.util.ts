@@ -23,7 +23,11 @@ export async function login(reqest: express.Request): Promise<Response> {
         return new ErrorResponse(401, 'Unauthorized!');
     }
     const token = await jwt.sign(JSON.stringify(user), process.env.JWT_SECRET);
-    return new SuccessResponse().setData(token);
+    const responseData = {
+        token: token,
+        user: user,
+    }
+    return new SuccessResponse().setData(responseData);
 }
 
 export async function register(request: express.Request): Promise<Response> {

@@ -4,8 +4,12 @@ export class DbItem {
 
     id: string | undefined;
 
-    constructor(data: any | undefined){
-        if (typeof data !== 'undefined') {
+    constructor(data: any | string | undefined){
+        if (typeof data === 'string') {
+            console.log("hey");
+            this.id = data;
+            console.log(this.id);
+        } else if (typeof data !== 'undefined') {
             this.id = data.id;
         }
     }    
@@ -84,6 +88,7 @@ export class DbItem {
     }
 
     whereString(): string {
+        console.log(this);
         var str = "";
         for (let data of Object.keys(this)){
             if (typeof this[data] != "undefined") {

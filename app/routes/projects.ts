@@ -19,8 +19,8 @@ router.get("/projects/:id", async (req: express.Request, resp: express.Response)
     if (!req.params['id']) {
         new SuccessResponse(404, 'No projects found!').send(resp);
     }
-    const projects = await fetch(config.db.tables.projects, new Project({id: req.params['id']}));
-    new SuccessResponse().setData(projects).send(resp);
+    const project: Project | void = (await fetch<Project>(config.db.tables.projects, new Project({id: req.params['id']}))).pop();
+    new SuccessResponse().setData(project).send(resp);
 });
 
 router.post("/projects", verifyTokenMiddleware, async (req: express.Request, resp: express.Response) => {
@@ -33,7 +33,7 @@ router.post("/projects", verifyTokenMiddleware, async (req: express.Request, res
 });
 
 router.patch("/projects/:id", async (req: express.Request, resp: express.Response) => {
-    let project: Project | void = (await fetch<Project>(config.db.tables.projects, new DbItem(req.params['id']))).pop();
+    let project: Project | void = (await fetch<Project>(config.db.tables.projects, new DbItem({id: req.params['id']}))).pop();
     if (!project) {
         return new Response(404, 'No projects found!').send(resp);
     }
